@@ -117,7 +117,24 @@ class Task(object):
             self.log('用户:' + self.name + '  WxPusher推送成功')
         else:
             self.log('用户:' + self.name + '  WxPusher推送失败,请检查appToken和uid是否正确')
-
+    '''
+    钉钉推送
+    '''
+    def dingtalk(self):
+            self.diyText()
+            headers = {'Content-Type': 'application/json;charset=utf-8'}  # 请求头
+            api_url = "https://oapi.dingtalk.com/robot/send?access_token=1c935b2c5644c4b1761fb8767d7ffb86a326a835aad2828931c3c782b84b7981"
+            json_text = {
+                "msgtype": "text",  # 信息格式
+                "text": {
+                    "content": self.title+"\n"+self.content
+                },
+            }
+            response=requests.post(api_url, json.dumps(json_text), headers=headers)
+            if(response.status_code==400):
+                    self.log("钉钉推送成功")
+            else:
+                    self.log("钉钉推送失败")
     '''
     自定义要推送到微信的内容
     title:消息的标题
